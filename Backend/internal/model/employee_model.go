@@ -45,6 +45,7 @@ type Sale struct {
 	UpdatedAt time.Time      `json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at"`
 }
+
 type ServiceRequest struct {
 	RequestID    uint     `gorm:"primaryKey" json:"request_id"`
 	Description  string   `gorm:"column:description" json:"description"`
