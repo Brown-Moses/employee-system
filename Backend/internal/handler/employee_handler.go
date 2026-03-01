@@ -9,8 +9,7 @@ import (
 )
 
 func GetEmployees(c *gin.Context) {
-
-	var employees []model.EmployeeDTO
+	var employees []model.Employee
 	if err := db.DB.Preload("Manager").Find(&employees).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Failed to retrieve employees"})
 		return

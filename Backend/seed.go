@@ -15,7 +15,6 @@ func run() {
 		println("connection successful!")
 	}
 
-	// drop tables to ensure schema is recreated cleanly (development only)
 	_ = db.DB.Migrator().DropTable(&model.Employee{}, &model.Customer{}, &model.Sale{}, &model.ServiceRequest{})
 	if err := db.DB.AutoMigrate(&model.Employee{}, &model.Sale{}, &model.ServiceRequest{}, &model.Customer{}); err != nil {
 		log.Fatalf("migrate failed: %v", err)
