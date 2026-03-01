@@ -6,17 +6,13 @@ import (
 	"gorm.io/gorm"
 )
 
-// Employee represents a staff member. The primary key is EmployeeID;
-// embedding gorm.Model is avoided because it would add an `id` column and
-// make the primary key composite, which causes foreign-key errors when another
-// employee references a manager.
-//
-// Timestamps are added manually so we still have created/updated/deleted fields.
 type Employee struct {
 	EmployeeID uint      `gorm:"primaryKey" json:"employee_id"`
 	FirstName  string    `gorm:"column:first_name" json:"first_name"`
 	LastName   string    `gorm:"column:last_name" json:"last_name"`
-	JobTitle   string    `gorm:"column:job_title" json:"job_title"`
+	JobTitle   JobTitle  `gorm:"column:job_title" json:"job_title"`
+	Gender     Gender    `gorm:"column:gender" json:"gender"`
+	Salary     float64   `gorm:"column:salary" json:"salary"`
 	ManagerID  *uint     `gorm:"column:manager_id" json:"manager_id"`
 	Manager    *Employee `gorm:"foreignKey:ManagerID;references:EmployeeID" json:"manager,omitempty"`
 
