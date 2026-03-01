@@ -14,7 +14,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	} else {
-		println("connection successfully!")
+		println("connection successful!")
 	}
 
 	db.DB.AutoMigrate(&model.Employee{}, &model.Sale{}, &model.ServiceRequest{}, &model.Customer{})
