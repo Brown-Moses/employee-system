@@ -7,7 +7,7 @@ import (
 	"codewithwuruem/internal/model"
 )
 
-func seed() {
+func run() {
 	err := db.InitDB()
 	if err != nil {
 		panic(err)
