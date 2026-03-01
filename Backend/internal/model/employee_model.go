@@ -36,10 +36,9 @@ type Sale struct {
 	SaleID               uint     `gorm:"primaryKey" json:"sale_id"`
 	SaleDate             string   `gorm:"column:sale_date" json:"sale_date"`
 	Amount               float64  `gorm:"column:amount" json:"amount"`
-	SaleRepresentativeID uint     `gorm:"column:not null" json:"sale_representative_id"`
-	SaleRepresentative   Employee `gorm:"foreignKey:SaleRepresentativeID" json:"sale_representative"`
-	CustomerID           uint     `gorm:"column:not null" json:"customer_id"`
-	Customer             Customer `gorm:"foreignKey:CustomerID" json:"customer"`
+	SaleRepresentativeID uint     `gorm:"not null" json:"sale_representative_id"`
+	SaleRepresentative   Employee `gorm:"foreignKey:SaleRepresentativeID;references:EmployeeID" json:"sale_representative"`
+	CustomerID           uint     `gorm:"not null" json:"customer_id"`
 
 	CreatedAt time.Time      `json:"created_at"`
 	UpdatedAt time.Time      `json:"updated_at"`
@@ -49,10 +48,9 @@ type Sale struct {
 type ServiceRequest struct {
 	RequestID    uint     `gorm:"primaryKey" json:"request_id"`
 	Description  string   `gorm:"column:description" json:"description"`
-	TechnicianID uint     `gorm:"column:not null" json:"technician_id"`
-	Technician   Employee `gorm:"foreignKey:TechnicianID" json:"technician"`
-	CustomerID   uint     `gorm:"column:not null" json:"customer_id"`
-	Customer     Customer `gorm:"foreignKey:CustomerID" json:"customer"`
+	TechnicianID uint     `gorm:"not null" json:"technician_id"`
+	Technician   Employee `gorm:"foreignKey:TechnicianID;references:EmployeeID" json:"technician"`
+	CustomerID   uint     `gorm:"not null" json:"customer_id"`
 
 	CreatedAt time.Time      `json:"created_at"`
 	UpdatedAt time.Time      `json:"updated_at"`
