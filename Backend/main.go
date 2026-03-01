@@ -17,8 +17,6 @@ func main() {
 		println("connection successfully!")
 	}
 
-	_ = db.DB.Migrator().DropTable(&model.Employee{}, &model.Customer{}, &model.Sale{}, &model.ServiceRequest{})
-
 	db.DB.AutoMigrate(&model.Employee{}, &model.Sale{}, &model.ServiceRequest{}, &model.Customer{})
 
 	r := gin.Default()
