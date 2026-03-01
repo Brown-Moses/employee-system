@@ -16,7 +16,7 @@ func NewRepository(db *gorm.DB) *Repository {
 }
 
 // only sales rep can handle sales
-func (r *Repository) CreateSale(sale *model.Sale) error {
+func (r *Repository) CreateSale(sale *model.SaleDTO) error {
 	var employee model.EmployeeDTO
 	if err := r.db.First(&employee, sale.SaleRepresentativeID).Error; err != nil {
 		return errors.New("sale representative not found")
@@ -30,7 +30,7 @@ func (r *Repository) CreateSale(sale *model.Sale) error {
 }
 
 // only technicians can handle service requests
-func (r *Repository) CreateServiceRequest(request *model.ServiceRequest) error {
+func (r *Repository) CreateServiceRequest(request *model.ServiceRequestDTO) error {
 	var employee model.EmployeeDTO
 	if err := r.db.First(&employee, request.TechnicianID).Error; err != nil {
 		return errors.New("technician not found")

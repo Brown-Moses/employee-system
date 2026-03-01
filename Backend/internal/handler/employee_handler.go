@@ -19,7 +19,7 @@ func GetEmployees(c *gin.Context) {
 }
 
 func CreateSale(c *gin.Context) {
-	var sale model.Sale
+	var sale model.SaleDTO
 	if err := c.ShouldBindJSON(&sale); err != nil {
 		c.JSON(400, gin.H{"error": "Invalid input"})
 		return
@@ -33,7 +33,7 @@ func CreateSale(c *gin.Context) {
 }
 
 func CreateServiceRequest(c *gin.Context) {
-	var request model.ServiceRequest
+	var request model.ServiceRequestDTO
 	if err := c.ShouldBindJSON(&request); err != nil {
 		c.JSON(400, gin.H{"error": "Invalid input"})
 		return
