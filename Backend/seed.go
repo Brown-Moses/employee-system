@@ -22,7 +22,7 @@ func run() {
 
 	// seed employees
 	employees := []model.Employee{
-		{EmployeeID: 1, FirstName: "Moses", LastName: "Justin", JobTitle: model.JobTech, Gender: model.GenderFemale, Salary: 75000},
+		{EmployeeID: 1, FirstName: "Moses", LastName: "Justin", JobTitle: model.JobTechnician, Gender: model.GenderFemale, Salary: 75000},
 		{EmployeeID: 2, FirstName: "Peter", LastName: "Jones", JobTitle: model.JobManager, Gender: model.GenderMale, Salary: 90000, ManagerID: ptrUint(1)},
 		{EmployeeID: 3, FirstName: "Sarah", LastName: "Williams", JobTitle: model.JobSales, Gender: model.GenderFemale, Salary: 65000, ManagerID: ptrUint(2)},
 	}
