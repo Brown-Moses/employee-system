@@ -3,22 +3,25 @@ package handler
 import (
 	"codewithwuruem/internal/db"
 	"codewithwuruem/internal/model"
+	"codewithwuruem/internal/repository"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func AddEmployees(c *gin.Context) {
-	var employees []model.EmployeeDTO
-	if err := c.ShouldBindJSON(&employees); err != nil {
+	var employee model.EmployeeDTO
+	if err := c.ShouldBindJSON(&employee); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
 		return
 	}
-	if err := db.DB.Create(&employees).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add employees"})
+
+	empRepo := repository.NewEmployeeRepository(db.DB)
+	if err := empRepo.CreateEmployee(&employee); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusCreated, employees)
+	c.JSON(http.StatusCreated, employee)
 }
 
 func GetEmployees(c *gin.Context) {
@@ -30,29 +33,41 @@ func GetEmployees(c *gin.Context) {
 	c.JSON(http.StatusOK, employees)
 }
 
-func CreateSale(c *gin.Context) {
-	var sale model.SaleDTO
-	if err := c.ShouldBindJSON(&sale); err != nil {
-		c.JSON(400, gin.H{"error": "Invalid input"})
+func GetEmployeeByID(c *gin.Context) {
+	id := c.Param("id")
+	var employee model.Employee
+	if err := db.DB.Preload("Manager").First(&employee, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Employee not found"})
 		return
 	}
-	if err := db.DB.Create(&sale).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Failed to create sale"})
-		return
-	}
-	c.JSON(http.StatusCreated, sale)
-
+	c.JSON(http.StatusOK, employee)
 }
 
-func CreateServiceRequest(c *gin.Context) {
-	var request model.ServiceRequestDTO
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.JSON(400, gin.H{"error": "Invalid input"})
+func UpdateEmployee(c *gin.Context) {
+	id := c.Param("id")
+	var employee model.Employee
+	if err := db.DB.First(&employee, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Employee not found"})
 		return
 	}
-	if err := db.DB.Create(&request).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Failed to create service request"})
+
+	var updatedData model.EmployeeDTO
+	if err := c.ShouldBindJSON(&updatedData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
 		return
 	}
-	c.JSON(http.StatusCreated, request)
+	if employee.ManagerID != nil && updatedData.ManagerID != nil && *employee.ManagerID != *updatedData.ManagerID {
+		c.JSON(400, gin.H{"error": "Manager cant be their own manager"})
+	}
+
+	c.JSON(http.StatusCreated, employee)
+}
+
+func DeleteEmployeeByID(c *gin.Context) {
+	id := c.Param("id")
+	if err := db.DB.Delete(&model.Employee{}, id).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete employee"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Employee deleted successfully"})
 }

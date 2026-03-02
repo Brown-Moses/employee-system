@@ -6,6 +6,7 @@ type EmployeeDTO struct {
 	LastName   string   `json:"last_name"`
 	JobTitle   JobTitle `json:"job_title"`
 	Gender     Gender   `json:"gender"`
+	Email      string   `json:"email"`
 	Salary     float64  `json:"salary"`
 	ManagerID  *uint    `json:"manager_id,omitempty"`
 }

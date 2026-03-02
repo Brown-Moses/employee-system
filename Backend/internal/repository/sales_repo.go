@@ -7,25 +7,16 @@ import (
 	"gorm.io/gorm"
 )
 
-type Repository struct {
+type SalesRepository struct {
 	db *gorm.DB
 }
 
-func NewRepository(db *gorm.DB) *Repository {
-	return &Repository{db: db}
-}
-
-// getting employee,(Manager)
-func (r *Repository) GetEmployeesByID() ([]model.Employee, error) {
-	var employees []model.Employee
-	if err := r.db.Preload("Manager").Find(&employees).Error; err != nil {
-		return nil, err
-	}
-	return employees, nil
+func NewRepository(db *gorm.DB) *SalesRepository {
+	return &SalesRepository{db: db}
 }
 
 // only sales rep can handle sales
-func (r *Repository) CreateSale(sale *model.SaleDTO) error {
+func (r *SalesRepository) CreateSale(sale *model.SaleDTO) error {
 	var employee model.EmployeeDTO
 	if err := r.db.First(&employee, sale.SaleRepresentativeID).Error; err != nil {
 		return errors.New("sale representative not found")
@@ -39,7 +30,7 @@ func (r *Repository) CreateSale(sale *model.SaleDTO) error {
 }
 
 // only technicians can handle service requests
-func (r *Repository) CreateServiceRequest(request *model.ServiceRequestDTO) error {
+func (r *SalesRepository) CreateServiceRequest(request *model.ServiceRequestDTO) error {
 	var employee model.EmployeeDTO
 	if err := r.db.First(&employee, request.TechnicianID).Error; err != nil {
 		return errors.New("technician not found")

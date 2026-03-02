@@ -12,6 +12,7 @@ type Employee struct {
 	LastName   string    `gorm:"column:last_name" json:"last_name"`
 	JobTitle   JobTitle  `gorm:"column:job_title" json:"job_title"`
 	Gender     Gender    `gorm:"column:gender" json:"gender"`
+	Email      string    `gorm:"column:email;unique" json:"email"`
 	Salary     float64   `gorm:"column:salary" json:"salary"`
 	ManagerID  *uint     `gorm:"column:manager_id" json:"manager_id"`
 	Manager    *Employee `gorm:"foreignKey:ManagerID;references:EmployeeID" json:"manager,omitempty"`
