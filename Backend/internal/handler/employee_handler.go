@@ -8,6 +8,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func AddEmployees(c *gin.Context) {
+	var employees []model.EmployeeDTO
+	if err := c.ShouldBindJSON(&employees); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+		return
+	}
+	if err := db.DB.Create(&employees).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add employees"})
+		return
+	}
+	c.JSON(http.StatusCreated, employees)
+}
+
 func GetEmployees(c *gin.Context) {
 	var employees []model.Employee
 	if err := db.DB.Preload("Manager").Find(&employees).Error; err != nil {
