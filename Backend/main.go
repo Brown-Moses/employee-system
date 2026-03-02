@@ -17,7 +17,15 @@ func main() {
 		println("connection successful!")
 	}
 
-	db.DB.AutoMigrate(&model.Employee{}, &model.Sale{}, &model.ServiceRequest{}, &model.Customer{})
+	db.DB.AutoMigrate(
+		&model.Employee{},
+		&model.Manager{},
+		&model.SalesRepresentative{},
+		&model.Technician{},
+		&model.Sale{},
+		&model.ServiceRequest{},
+		&model.Customer{},
+	)
 
 	r := gin.Default()
 
