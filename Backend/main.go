@@ -28,6 +28,10 @@ func main() {
 		})
 	})
 
+	r.POST("/employees", handler.AddEmployees)
+	r.GET("/employees/:id", handler.GetEmployeeByID)
+	r.PUT("/employees/:id", handler.UpdateEmployee)
+	r.DELETE("/employees/:id", handler.DeleteEmployeeByID)
 	r.GET("/employees", handler.GetEmployees)
 	r.POST("/sales", handler.CreateSale)
 	r.POST("/service-requests", handler.CreateServiceRequest)
