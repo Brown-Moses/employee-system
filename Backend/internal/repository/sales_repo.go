@@ -15,6 +15,15 @@ func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{db: db}
 }
 
+// getting employee,(Manager)
+func (r *Repository) GetEmployeesByID() ([]model.Employee, error) {
+	var employees []model.Employee
+	if err := r.db.Preload("Manager").Find(&employees).Error; err != nil {
+		return nil, err
+	}
+	return employees, nil
+}
+
 // only sales rep can handle sales
 func (r *Repository) CreateSale(sale *model.SaleDTO) error {
 	var employee model.EmployeeDTO
